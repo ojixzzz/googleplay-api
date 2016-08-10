@@ -219,10 +219,11 @@ class GooglePlayAPI(object):
             path += "&cat=%s" % requests.utils.quote(cat)
         if (ctr != None):
             path += "&ctr=%s" % requests.utils.quote(ctr)
+
         message = self.executeRequestApi2(path)
         return message.payload.browseResponse
 
-    def list(self, cat, ctr=None, nb_results=None, offset=None):
+    def list(self, cat, ctr=None, nb_results=None, offset=None, ctntkn=None):
         """List apps.
 
         If ctr (subcategory ID) is None, returns a list of valid subcategories.
@@ -232,9 +233,13 @@ class GooglePlayAPI(object):
         if (ctr != None):
             path += "&ctr=%s" % requests.utils.quote(ctr)
         if (nb_results != None):
-            path += "&n=%s" % requests.utils.quote(nb_results)
+            path += "&n=%s" % int(nb_results)
         if (offset != None):
-            path += "&o=%s" % requests.utils.quote(offset)
+            path += "&o=%s" % int(offset)
+        if (ctntkn != None):
+            path += "&ctntkn=%s" % requests.utils.quote(ctntkn)
+
+        print path
         message = self.executeRequestApi2(path)
         return message.payload.listResponse
     
@@ -264,8 +269,12 @@ class GooglePlayAPI(object):
         message = self.executeRequestApi2(path, data)
 
         url = message.payload.buyResponse.purchaseStatusResponse.appDeliveryData.downloadUrl
-        cookie = message.payload.buyResponse.purchaseStatusResponse.appDeliveryData.downloadAuthCookie[0]
-
+        cookie = message.payload.buyResponse.purchaseStatusResponse.appDeliveryData.downloadAuthCookie
+        if len(cookie) > 0:
+            cookie = cookie[0]
+        else:
+            return False
+            
         cookies = {
             str(cookie.name): str(cookie.value) # python-requests #459 fixes this
         }

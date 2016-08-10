@@ -36,6 +36,8 @@ ot = doc.offer[0].offerType
 # Download
 print "Downloading %s..." % sizeof_fmt(doc.details.appDetails.installationSize),
 data = api.download(packagename, vc, ot)
-open(filename, "wb").write(data)
-print "Done"
-
+if data:
+	open(filename, "wb").write(data)
+	print "Done"
+else:
+	print "Error"

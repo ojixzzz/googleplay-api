@@ -9,3 +9,4 @@
 *.apk
 
 config.py
+.DS_Store

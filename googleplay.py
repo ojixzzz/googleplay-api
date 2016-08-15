@@ -238,8 +238,7 @@ class GooglePlayAPI(object):
             path += "&o=%s" % int(offset)
         if (ctntkn != None):
             path += "&ctntkn=%s" % requests.utils.quote(ctntkn)
-
-        print path
+            
         message = self.executeRequestApi2(path)
         return message.payload.listResponse
     

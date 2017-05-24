@@ -127,7 +127,9 @@ class GooglePlayAPI(object):
             params = {}
             for d in data:
                 if not "=" in d: continue
-                k, v = d.split("=")
+                v_len = d.find('=') + 1
+                k = d.split("=")[0]
+                v = d[v_len:]
                 params[k.strip().lower()] = v.strip()
             if "auth" in params:
                 self.setAuthSubToken(params["auth"])
@@ -269,6 +271,7 @@ class GooglePlayAPI(object):
 
         url = message.payload.buyResponse.purchaseStatusResponse.appDeliveryData.downloadUrl
         cookie = message.payload.buyResponse.purchaseStatusResponse.appDeliveryData.downloadAuthCookie
+        
         if len(cookie) > 0:
             cookie = cookie[0]
         else:
